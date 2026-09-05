@@ -1,0 +1,24 @@
+2026-09-05 14:33:05 - Health check script started successfully.
+2026-09-05 14:33:06 - CPU Usage: 1% - Status: OK
+2026-09-05 14:33:06 - Memory Usage: 69% - Status: OK
+2026-09-05 14:33:06 - Swap Usage: 34% - Status: WARNING
+2026-09-05 14:33:06 - Disk Usage (/): 89% - Status: WARNING
+2026-09-05 14:33:06 - Inode Usage (/): 5% - Status: OK
+2026-09-05 14:33:06 - Load Average (1m/Core): .02 - Status: OK
+2026-09-05 14:33:06 - Uptime: up 1 hour, 27 minutes
+2026-09-05 14:33:06 - Server Boot Time: 2026-09-05 13:05:11
+2026-09-05 14:33:06 - Top 5 CPU consuming processes:
+    PID COMMAND         %CPU %MEM USER
+   2401 grafana          0.7 18.4 root
+   2418 pyroscope        0.7  6.7 root
+   2405 otelcol-contrib  0.5  6.7 root
+   2403 loki             0.4  5.9 root
+   2409 prometheus       0.3  6.7 root
+2026-09-05 14:33:06 - Top 5 Memory consuming processes:
+    PID COMMAND         %CPU %MEM USER
+   2401 grafana          0.7 18.4 root
+   2418 pyroscope        0.7  6.7 root
+   2409 prometheus       0.3  6.7 root
+   2405 otelcol-contrib  0.5  6.7 root
+   2403 loki             0.4  5.9 root
+2026-09-05 14:33:06 - Overall Server Health: WARNING
