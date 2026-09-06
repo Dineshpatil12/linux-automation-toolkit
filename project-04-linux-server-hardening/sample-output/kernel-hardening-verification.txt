@@ -1,0 +1,22 @@
+===== KERNEL HARDENING VERIFICATION =====
+Sun Sep  6 11:58:11 UTC 2026
+
+net.ipv4.ip_forward = 1
+net.ipv4.conf.all.accept_redirects = 0
+net.ipv4.conf.default.accept_redirects = 0
+net.ipv4.conf.all.send_redirects = 0
+net.ipv4.conf.default.send_redirects = 0
+net.ipv4.conf.all.rp_filter = 1
+net.ipv4.conf.default.rp_filter = 1
+net.ipv4.tcp_syncookies = 1
+kernel.randomize_va_space = 2
+
+Docker networks:
+NETWORK ID     NAME                            DRIVER    SCOPE
+cce40bc72176   bridge                          bridge    local
+5506640d09b6   host                            host      local
+d366d3a27558   none                            null      local
+780a11271a9e   prometheus-monitoring_default   bridge    local
+69dd22806f04   tracing-net                     bridge    local
+
+Note: net.ipv4.ip_forward remains enabled because Docker bridge networking requires it.

@@ -1,0 +1,17 @@
+===== ACCOUNT HARDENING VERIFICATION =====
+Sun Sep  6 11:53:55 UTC 2026
+
+login.defs:
+UMASK           027
+PASS_MAX_DAYS   90
+PASS_MIN_DAYS   1
+PASS_WARN_AGE   14
+
+ec2-user password aging:
+Last password change					: Aug 21, 2026
+Password expires					: Nov 19, 2026
+Password inactive					: never
+Account expires						: never
+Minimum number of days between password change		: 1
+Maximum number of days between password change		: 90
+Number of days of warning before password expires	: 14

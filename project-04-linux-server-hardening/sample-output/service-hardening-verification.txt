@@ -1,0 +1,49 @@
+===== SERVICE HARDENING VERIFICATION =====
+Sun Sep  6 12:01:31 UTC 2026
+
+Enabled services:
+UNIT FILE                            STATE   PRESET
+amazon-ssm-agent.service             enabled enabled
+atd.service                          enabled enabled
+auditd.service                       enabled enabled
+chrony-config.service                enabled enabled
+chronyd.service                      enabled enabled
+cloud-config.service                 enabled disabled
+cloud-final.service                  enabled disabled
+cloud-init-local.service             enabled disabled
+cloud-init.service                   enabled disabled
+crond.service                        enabled enabled
+dbus-broker.service                  enabled enabled
+docker.service                       enabled disabled
+getty@.service                       enabled enabled
+hibinit-agent.service                enabled enabled
+import-state.service                 enabled enabled
+irqbalance.service                   enabled enabled
+libstoragemgmt.service               enabled enabled
+nfs-convert.service                  enabled disabled
+rpmdb-rebuild.service                enabled enabled
+selinux-autorelabel-mark.service     enabled enabled
+sshd.service                         enabled enabled
+sssd.service                         enabled enabled
+sysstat.service                      enabled enabled
+systemd-boot-update.service          enabled enabled
+systemd-homed-activate.service       enabled disabled
+systemd-homed.service                enabled enabled
+systemd-network-generator.service    enabled enabled
+systemd-networkd-wait-online.service enabled disabled
+systemd-networkd.service             enabled enabled
+systemd-pstore.service               enabled enabled
+systemd-resolved.service             enabled enabled
+update-motd.service                  enabled enabled
+
+32 unit files listed.
+
+Legacy / unnecessary service check:
+telnet.socket             not-installed
+rsh.socket                not-installed
+rlogin.socket             not-installed
+vsftpd.service            not-installed
+tftp.service              not-installed
+cups.service              not-installed
+avahi-daemon.service      not-installed
+rpcbind.service           disabled

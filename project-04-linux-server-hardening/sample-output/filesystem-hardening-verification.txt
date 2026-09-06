@@ -1,0 +1,13 @@
+===== FILESYSTEM HARDENING VERIFICATION =====
+Sun Sep  6 12:00:09 UTC 2026
+
+Sensitive file permissions:
+644 root:root /etc/passwd
+0 root:root /etc/shadow
+644 root:root /etc/group
+0 root:root /etc/gshadow
+600 root:root /etc/ssh/sshd_config
+
+World-writable host files excluding Docker:
+
+Result: No world-writable host files found outside Docker.
