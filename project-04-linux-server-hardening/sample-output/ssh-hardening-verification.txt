@@ -1,0 +1,12 @@
+===== SSH HARDENING VERIFICATION =====
+Sun Sep  6 11:29:59 UTC 2026
+
+logingracetime 30
+maxauthtries 3
+permitrootlogin no
+passwordauthentication no
+x11forwarding no
+allowagentforwarding no
+
+SSHD Status:
+active
