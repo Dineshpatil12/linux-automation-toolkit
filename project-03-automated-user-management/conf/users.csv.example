@@ -1,0 +1,2 @@
+username,fullname,groups,shell,sudo,expiry,ssh_key
+devuser1,Dev User One,developers,/bin/bash,yes,2026-12-31,/opt/devopsshack/conf/keys/devuser1.pub
