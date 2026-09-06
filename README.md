@@ -15,7 +15,7 @@ The goal of this repository is to build practical experience in Linux administra
 | 01 | Automated System Health Checker | Completed |
 | 02 | Disk Usage Alerting Script | Completed |
 | 03 | Automated User Management System | Completed |
-| 04 | Linux Server Hardening | Upcoming |
+| 04 | Linux Server Hardening | Completed |
 | 05 | Backup and Restore System | Upcoming |
 | 06 | Log Analysis and Reporting | Upcoming |
 | 07 | Application Watchdog | Upcoming |
@@ -115,11 +115,25 @@ Completed
 
 ## Project 04 - Linux Server Hardening
 
-This project will automate Linux server security hardening and baseline configuration.
+Project 04 implements automated Linux server security hardening using Bash.
+
+The project includes:
+
+- SSH security hardening
+- Firewall configuration
+- User and account security checks
+- Secure file and directory permissions
+- Unnecessary service detection
+- Security configuration validation
+- Configuration backups before changes
+- Safe SSH configuration testing
+- Firewall verification
+- Security audit reporting
+- Logging and verification
 
 ### Status
 
-Upcoming
+Completed
 
 ---
 
