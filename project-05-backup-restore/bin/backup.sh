@@ -22,13 +22,17 @@ fail() {
 }
 
 if [[ ! -f "$CONFIG_FILE" ]]; then
-    fail "$CONFIG_ERROR" "Configuration file not found: $CONFIG_FILE"
+    echo "ERROR: Configuration file not found: $CONFIG_FILE"
+    exit "$CONFIG_ERROR"
 fi
 
 source "$CONFIG_FILE"
 
 for required_dir in "$SOURCE_DIR" "$BACKUP_DIR" "$STATE_DIR" "$LOG_DIR"; do
-    [[ -d "$required_dir" ]] || fail "$CONFIG_ERROR" "Required directory not found: $required_dir"
+    [[ -d "$required_dir" ]] || {
+        echo "ERROR: Required directory not found: $required_dir"
+        exit "$CONFIG_ERROR"
+    }
 done
 
 exec >> "$LOG_DIR/backup.log" 2>&1
@@ -36,16 +40,74 @@ exec >> "$LOG_DIR/backup.log" 2>&1
 log "Starting backup"
 log "Source: $SOURCE_DIR"
 
-ARCHIVE="$BACKUP_DIR/full-$(date +%Y%m%d-%H%M%S).tar.gz"
-CHECKSUM="${ARCHIVE}.sha256"
+FREE_MB=$(df -Pm "$BACKUP_DIR" | awk 'NR==2 {print $4}')
 
-if ! tar -czf "$ARCHIVE" \
-    -C "$(dirname "$SOURCE_DIR")" \
-    "$(basename "$SOURCE_DIR")"; then
-    fail "$BACKUP_ERROR" "Backup creation failed"
+if [[ "$FREE_MB" -lt "$MIN_FREE_MB" ]]; then
+    fail "$GENERAL_ERROR" "Insufficient disk space. Available: ${FREE_MB}MB, Required: ${MIN_FREE_MB}MB"
+fi
+
+NOW=$(date +%s)
+TODAY=$(date +%Y-%m-%d)
+
+LAST_FULL_FILE="$STATE_DIR/last_full_epoch"
+
+DO_FULL=false
+
+if [[ ! -f "$SNAPSHOT_FILE" ]]; then
+    DO_FULL=true
+elif [[ ! -f "$LAST_FULL_FILE" ]]; then
+    DO_FULL=true
+else
+    LAST_FULL=$(cat "$LAST_FULL_FILE")
+    AGE_DAYS=$(( (NOW - LAST_FULL) / 86400 ))
+
+    if [[ "$AGE_DAYS" -ge "$FULL_BACKUP_DAYS" ]]; then
+        DO_FULL=true
+    fi
+fi
+
+if [[ "$DO_FULL" == true ]]; then
+
+    log "Backup type: FULL"
+
+    rm -f "$SNAPSHOT_FILE"
+
+    ARCHIVE="$BACKUP_DIR/full-${TODAY}-$(date +%H%M%S).tar.gz"
+    CHECKSUM="${ARCHIVE}.sha256"
+
+    if ! tar \
+        --listed-incremental="$SNAPSHOT_FILE" \
+        -czf "$ARCHIVE" \
+        -C "$(dirname "$SOURCE_DIR")" \
+        "$(basename "$SOURCE_DIR")"; then
+
+        rm -f "$ARCHIVE" "$CHECKSUM"
+        fail "$BACKUP_ERROR" "Full backup creation failed"
+    fi
+
+    echo "$NOW" > "$LAST_FULL_FILE"
+
+else
+
+    log "Backup type: INCREMENTAL"
+
+    ARCHIVE="$BACKUP_DIR/incremental-${TODAY}-$(date +%H%M%S).tar.gz"
+    CHECKSUM="${ARCHIVE}.sha256"
+
+    if ! tar \
+        --listed-incremental="$SNAPSHOT_FILE" \
+        -czf "$ARCHIVE" \
+        -C "$(dirname "$SOURCE_DIR")" \
+        "$(basename "$SOURCE_DIR")"; then
+
+        rm -f "$ARCHIVE" "$CHECKSUM"
+        fail "$BACKUP_ERROR" "Incremental backup creation failed"
+    fi
+
 fi
 
 if ! sha256sum "$ARCHIVE" > "$CHECKSUM"; then
+    rm -f "$ARCHIVE" "$CHECKSUM"
     fail "$CHECKSUM_ERROR" "Checksum creation failed"
 fi
 
