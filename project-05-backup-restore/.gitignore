@@ -1,0 +1,22 @@
+# Project 5 runtime data
+backups/
+sample-output/runtime/
+screenshots/runtime/
+
+# Project 5 local/runtime artifacts
+*.tar
+*.tar.gz
+*.sha256
+*.snapshot
+*.manifest.json
+*.lock
+
+# Logs and temporary restore data
+*.log
+restore-test/
+
+# Secrets
+*.key
+*.pem
+*.secret
+.env
