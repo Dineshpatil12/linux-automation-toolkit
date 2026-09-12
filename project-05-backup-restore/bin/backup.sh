@@ -28,6 +28,14 @@ fi
 
 source "$CONFIG_FILE"
 
+LOCK_FILE="$STATE_DIR/backup.lock"
+exec 200>"$LOCK_FILE"
+
+if ! flock -n 200; then
+    echo "Another backup process is already running."
+    exit "$GENERAL_ERROR"
+fi
+
 for required_dir in "$SOURCE_DIR" "$BACKUP_DIR" "$STATE_DIR" "$LOG_DIR"; do
     [[ -d "$required_dir" ]] || {
         echo "ERROR: Required directory not found: $required_dir"
