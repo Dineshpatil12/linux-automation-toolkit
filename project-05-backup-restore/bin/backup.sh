@@ -123,31 +123,6 @@ if ! sha256sum -c "$CHECKSUM" >/dev/null 2>&1; then
     fail "$CHECKSUM_ERROR" "Checksum verification failed"
 fi
 
-MANIFEST="${ARCHIVE}.manifest.json"
-ARCHIVE_SHA256=$(awk '{print $1}' "$CHECKSUM")
-
-if ! jq -n \
-    --arg backup_type "$([[ "$DO_FULL" == true ]] && echo "full" || echo "incremental")" \
-    --arg timestamp "$(date -u '+%Y-%m-%dT%H:%M:%SZ')" \
-    --arg archive "$ARCHIVE" \
-    --arg checksum "$ARCHIVE_SHA256" \
-    --arg source "$SOURCE_DIR" \
-    --arg rpo "${RPO_MINUTES} minutes" \
-    --arg rto "${RTO_MINUTES} minutes" \
-    '{
-        backup_type: $backup_type,
-        timestamp_utc: $timestamp,
-        archive: $archive,
-        sha256: $checksum,
-        source: $source,
-        rpo: $rpo,
-        rto: $rto
-    }' > "$MANIFEST"; then
-    fail "$GENERAL_ERROR" "Manifest creation failed"
-fi
-
-log "Manifest created successfully: $MANIFEST"
-
 log "Backup created successfully: $ARCHIVE"
 log "Checksum verified successfully"
 log "Backup completed"
