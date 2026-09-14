@@ -165,13 +165,33 @@ Completed
 
 ---
 
-## Project 06 - Log Analysis and Reporting
+## Project 06 - Log Analysis and Error Detection
 
-This project will automate Linux log analysis to identify errors, failures, unusual activity, and useful troubleshooting information.
+Project 06 implements a Linux log analysis and error detection tool for production-style troubleshooting.
+
+The project includes:
+
+- Journald time-window analysis
+- Severity and error extraction
+- Signature normalization
+- Authentication forensics
+- Brute-force detection
+- Web access-log analysis
+- Service instability detection
+- Baseline comparison
+- Structured reports
+- Logging
+- Cron automation
+- ShellCheck validation
+- Meaningful exit codes
+- Graceful handling when individual analysis modules fail
+- Safe synthetic test data
+
+A key validation test successfully reduces 200 similar timeout messages with different variable values into one normalized error signature.
 
 ### Status
 
-Upcoming
+Completed
 
 ---
 
