@@ -16,8 +16,8 @@ The goal of this repository is to build practical experience in Linux administra
 | 02 | Disk Usage Alerting Script | Completed |
 | 03 | Automated User Management System | Completed |
 | 04 | Linux Server Hardening | Completed |
-| 05 | Backup and Restore System | Upcoming |
-| 06 | Log Analysis and Reporting | Upcoming |
+| 05 | Backup and Restore System | Completed |
+| 06 | Log Analysis and Reporting | Completed |
 | 07 | Application Watchdog | Upcoming |
 | 08 | Automated Server Provisioning | Upcoming |
 | 09 | Linux Troubleshooting Toolkit | Upcoming |
@@ -139,11 +139,29 @@ Completed
 
 ## Project 05 - Backup and Restore System
 
-This project will implement automated backup, retention, verification, and restore operations.
+Project 05 implements an automated Linux backup and restore workflow.
+
+The project covers:
+
+- Full backups
+- Incremental backups
+- Backup integrity verification
+- Checksums
+- Backup retention
+- Safe incremental backup chain management
+- Database-aware backup
+- Restore procedures
+- Actual restore testing
+- Backup logging
+- Exit codes
+- Cron-based automation
+- RPO and RTO concepts
+
+The project uses controlled test data to safely demonstrate backup and recovery without affecting important system data.
 
 ### Status
 
-Upcoming
+Completed
 
 ---
 
