@@ -3,3 +3,7 @@
 *.bak2
 *.tmp
 .DS_Store
+
+# Project 6 generated reports
+project-06-log-analysis/reports/
+!project-06-log-analysis/tests/fixtures/web-access-test.log
