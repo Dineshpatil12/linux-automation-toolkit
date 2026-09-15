@@ -231,8 +231,10 @@ circuit_breaker_open() {
             return 0
         fi
 
-        log "INFO" "Circuit breaker cooldown expired; recovery is allowed"
-        rm -f "$CIRCUIT_STATE_FILE"
+        log "INFO" "Circuit breaker cooldown expired; entering half-open recovery state"
+        rm -f "$CIRCUIT_STATE_FILE" "$FAILURE_STATE_FILE"
+        log "INFO" "Previous failure history cleared for half-open recovery"
+        return 1
     fi
 
     if (( count >= MAX_FAILURES )); then
@@ -301,14 +303,14 @@ log "WARN" "Application is unhealthy"
 # Evidence must always be collected before remediation.
 collect_evidence
 
+record_failure
+cleanup_old_failures
+
 if circuit_breaker_open; then
     log "ERROR" "Automatic recovery suppressed due to repeated failures"
     log "ERROR" "Escalation required: manual investigation is needed"
     exit "$EXIT_ESCALATED"
 fi
-
-record_failure
-cleanup_old_failures
 
 log "INFO" "Beginning controlled recovery"
 
