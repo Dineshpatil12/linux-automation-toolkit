@@ -18,8 +18,8 @@ The goal of this repository is to build practical experience in Linux administra
 | 04 | Linux Server Hardening | Completed |
 | 05 | Backup and Restore System | Completed |
 | 06 | Log Analysis and Reporting | Completed |
-| 07 | Application Watchdog | Upcoming |
-| 08 | Automated Server Provisioning | Upcoming |
+| 07 | Application Watchdog | Completed |
+| 08 | Automated Server Provisioning | Completed |
 | 09 | Linux Troubleshooting Toolkit | Upcoming |
 | 10 | Self-Healing Linux Application with systemd | Upcoming |
 
