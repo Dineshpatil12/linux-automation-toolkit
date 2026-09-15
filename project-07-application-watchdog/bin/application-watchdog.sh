@@ -119,6 +119,46 @@ collect_evidence() {
     log "INFO" "Failure evidence collected successfully"
 }
 
+FAILURE_STATE_FILE="$STATE_DIR/${APP_NAME}.failures"
+CIRCUIT_STATE_FILE="$STATE_DIR/${APP_NAME}.circuit"
+
+record_failure() {
+    local now
+    now="$(date +%s)"
+
+    printf '%s\n' "$now" >> "$FAILURE_STATE_FILE"
+
+    log "INFO" "Failure recorded in state: $FAILURE_STATE_FILE"
+}
+
+cleanup_old_failures() {
+    local now
+    local cutoff
+    local temp_file
+
+    now="$(date +%s)"
+    cutoff=$(( now - FAILURE_WINDOW ))
+    temp_file="${FAILURE_STATE_FILE}.tmp"
+
+    if [[ ! -f "$FAILURE_STATE_FILE" ]]; then
+        return 0
+    fi
+
+    awk -v cutoff="$cutoff" '$1 >= cutoff' \
+        "$FAILURE_STATE_FILE" > "$temp_file"
+
+    mv "$temp_file" "$FAILURE_STATE_FILE"
+}
+
+failure_count() {
+    if [[ ! -f "$FAILURE_STATE_FILE" ]]; then
+        echo 0
+        return
+    fi
+
+    wc -l < "$FAILURE_STATE_FILE"
+}
+
 health_check() {
     local http_code
 
@@ -167,6 +207,49 @@ start_application() {
     return 1
 }
 
+circuit_breaker_open() {
+    cleanup_old_failures
+
+    local count
+    count="$(failure_count)"
+
+    log "INFO" "Recent failure count: $count/$MAX_FAILURES"
+
+    if [[ -f "$CIRCUIT_STATE_FILE" ]]; then
+        local opened_at
+        local now
+        local elapsed
+
+        opened_at="$(cat "$CIRCUIT_STATE_FILE")"
+        now="$(date +%s)"
+        elapsed=$(( now - opened_at ))
+
+        if (( elapsed < COOLDOWN_PERIOD )); then
+            local remaining
+            remaining=$(( COOLDOWN_PERIOD - elapsed ))
+            log "ERROR" "Circuit breaker is OPEN; recovery suppressed for ${remaining}s"
+            return 0
+        fi
+
+        log "INFO" "Circuit breaker cooldown expired; recovery is allowed"
+        rm -f "$CIRCUIT_STATE_FILE"
+    fi
+
+    if (( count >= MAX_FAILURES )); then
+        date +%s > "$CIRCUIT_STATE_FILE"
+        log "ERROR" "Restart protection activated: failure threshold reached"
+        log "ERROR" "Circuit breaker OPEN for ${COOLDOWN_PERIOD}s"
+        return 0
+    fi
+
+    return 1
+}
+
+clear_failure_state() {
+    rm -f "$FAILURE_STATE_FILE" "$CIRCUIT_STATE_FILE"
+    log "INFO" "Failure and circuit-breaker state cleared after successful recovery"
+}
+
 recover_application() {
     local attempt=1
     local backoff="$INITIAL_BACKOFF"
@@ -179,6 +262,7 @@ recover_application() {
 
             if health_check; then
                 log "INFO" "Recovery verification successful: application is healthy"
+                clear_failure_state
                 return 0
             fi
 
@@ -217,6 +301,15 @@ log "WARN" "Application is unhealthy"
 # Evidence must always be collected before remediation.
 collect_evidence
 
+if circuit_breaker_open; then
+    log "ERROR" "Automatic recovery suppressed due to repeated failures"
+    log "ERROR" "Escalation required: manual investigation is needed"
+    exit "$EXIT_ESCALATED"
+fi
+
+record_failure
+cleanup_old_failures
+
 log "INFO" "Beginning controlled recovery"
 
 if recover_application; then
@@ -225,5 +318,4 @@ if recover_application; then
 fi
 
 log "ERROR" "Application recovery failed after all attempts"
-
 exit "$EXIT_RECOVERY_FAILED"
