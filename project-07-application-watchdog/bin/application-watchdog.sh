@@ -82,7 +82,7 @@ collect_evidence() {
         echo
 
         echo "===== PROCESS STATUS ====="
-        ps -ef | grep "[p]ython3 $APP_SCRIPT" || true
+        pgrep -af "python3 $APP_SCRIPT" || true
         echo
 
         echo "===== PORT STATUS ====="
