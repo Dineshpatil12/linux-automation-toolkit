@@ -1,0 +1,16 @@
+Project 08 - Automated Server Provisioning
+===========================================
+
+Generated: 2026-09-15 14:21:20 UTC
+
+Server:
+  Hostname: ip-172-31-3-23.ap-south-1.compute.internal
+  OS: Amazon Linux 2023.12.20260817
+  Kernel: 6.18.41-94.142.amzn2023.x86_64
+  Package Manager: dnf
+
+Validation:
+  Failures: 0
+
+Result:
+  PASS
