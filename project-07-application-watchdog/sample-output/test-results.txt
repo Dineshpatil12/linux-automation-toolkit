@@ -1,0 +1,71 @@
+Project 07 – Application Watchdog
+Test Results
+================================
+
+Environment
+-----------
+Platform: AWS EC2
+OS: Amazon Linux 2023
+Application: demo-app
+Health URL: http://127.0.0.1:8080/health
+
+Test 1 – Healthy Application
+-----------------------------
+Result: PASS
+Health check: HTTP 200
+Watchdog exit code: 0
+Expected behavior: Healthy application was detected and no restart was required.
+
+Test 2 – Controlled Recovery
+----------------------------
+Result: PASS
+Application was stopped intentionally.
+Watchdog detected the failure.
+Diagnostic evidence was collected before remediation.
+Recovery was attempted.
+Application health returned HTTP 200.
+Watchdog exit code: 0.
+
+Test 3 – Recovery Failure
+-------------------------
+Result: PASS
+Application startup was intentionally disabled.
+Watchdog performed three recovery attempts.
+Backoff delays were applied between attempts.
+All recovery attempts failed as expected.
+Watchdog exit code: 1.
+
+Test 4 – Circuit Breaker
+------------------------
+Result: PASS
+Repeated application failures were generated.
+Failure threshold was reached.
+Circuit breaker opened.
+Automatic recovery was suppressed.
+Escalation was reported.
+Watchdog exit code: 3.
+
+Test 5 – Cooldown / Half-Open Recovery
+--------------------------------------
+Result: PASS
+Circuit-breaker cooldown was simulated.
+Watchdog entered half-open recovery.
+Application was started successfully.
+Health verification returned HTTP 200.
+Failure and circuit state were cleared.
+Watchdog exit code: 0.
+
+Cron Validation
+---------------
+Result: PASS
+Watchdog configured to run every five minutes.
+Cron execution was manually validated.
+Watchdog cron log was created successfully.
+
+Final Validation
+----------------
+Bash syntax check: PASS
+Runtime syntax check: PASS
+Git diff check: PASS
+Live health check: HTTP 200
+ShellCheck: Not installed on the lab server.
