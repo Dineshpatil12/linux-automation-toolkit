@@ -197,21 +197,51 @@ Completed
 
 ## Project 07 - Application Watchdog
 
-This project will monitor application health, detect failures, collect diagnostic information, and perform controlled recovery actions.
+This project monitors application health, detects failures, collects diagnostic information, and performs controlled recovery actions.
+
+The project includes:
+
+- Application health checks
+- Failure detection
+- Diagnostic evidence collection
+- Controlled application recovery
+- Recovery verification
+- Retry and backoff
+- Restart-loop protection
+- Escalation handling
+- Logging
+- Cron automation
+- Meaningful exit codes
+- Safe synthetic failure testing
 
 ### Status
 
-Upcoming
+Completed
 
 ---
 
 ## Project 08 - Automated Server Provisioning
 
-This project will automate the configuration of a new Linux server and create a repeatable server provisioning process.
+This project automates the configuration of a Linux server and creates a repeatable server provisioning process.
+
+The project includes:
+
+- Server environment validation
+- Package provisioning
+- User and group configuration
+- Directory creation
+- Permission configuration
+- Service configuration
+- Configuration validation
+- Idempotent provisioning
+- Logging
+- Error handling
+- Provisioning verification
+- ShellCheck validation
 
 ### Status
 
-Upcoming
+Completed
 
 ---
 
