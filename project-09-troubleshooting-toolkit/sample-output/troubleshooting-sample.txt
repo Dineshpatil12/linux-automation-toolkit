@@ -1,0 +1,51 @@
+Linux Troubleshooting Toolkit - Sample Report
+============================================================
+Host: production-server.example
+Uptime: 2 days, 4 hours
+
+CPU
+============================================================
+CPU cores: 2
+CPU utilization: Normal
+
+Load Average
+============================================================
+Load average: 0.12 0.15 0.18
+
+Memory and Swap
+============================================================
+Memory utilization: 56%
+Swap utilization: 12%
+
+Disk and Inodes
+============================================================
+Root filesystem utilization: 78%
+Inode utilization: 5%
+
+Disk I/O
+============================================================
+I/O statistics collected successfully.
+
+Processes
+============================================================
+Top CPU and memory consuming processes collected.
+
+Network
+============================================================
+Network interfaces, routes, and listening ports collected.
+
+Logs
+============================================================
+System warnings and errors collected.
+
+System and Service State
+============================================================
+Failed services checked.
+
+Warnings / Errors
+============================================================
+No diagnostic warnings or errors encountered.
+
+Collection Summary
+============================================================
+Warnings/errors during collection: 0
