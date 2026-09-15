@@ -137,6 +137,74 @@ health_check() {
     return 1
 }
 
+start_application() {
+    log "INFO" "Starting application: $APP_NAME"
+
+    if [[ ! -f "$APP_SCRIPT" ]]; then
+        log "ERROR" "Application script not found: $APP_SCRIPT"
+        return 1
+    fi
+
+    if [[ -f "$APP_DIR/app.log" ]]; then
+        touch "$APP_DIR/app.log"
+    fi
+
+    nohup python3 "$APP_SCRIPT" >> "$APP_DIR/app.log" 2>&1 &
+    local new_pid=$!
+
+    echo "$new_pid" > "$STATE_DIR/${APP_NAME}.pid"
+
+    log "INFO" "Application start command issued: PID=$new_pid"
+
+    sleep 2
+
+    if kill -0 "$new_pid" 2>/dev/null; then
+        log "INFO" "Application process is running: PID=$new_pid"
+        return 0
+    fi
+
+    log "ERROR" "Application process exited after start attempt"
+    return 1
+}
+
+recover_application() {
+    local attempt=1
+    local backoff="$INITIAL_BACKOFF"
+
+    while (( attempt <= MAX_RETRIES )); do
+        log "INFO" "Recovery attempt $attempt of $MAX_RETRIES"
+
+        if start_application; then
+            log "INFO" "Application process started successfully"
+
+            if health_check; then
+                log "INFO" "Recovery verification successful: application is healthy"
+                return 0
+            fi
+
+            log "WARN" "Recovery attempt $attempt failed health verification"
+        else
+            log "WARN" "Recovery attempt $attempt failed to start application"
+        fi
+
+        if (( attempt < MAX_RETRIES )); then
+            log "INFO" "Waiting ${backoff}s before next recovery attempt"
+            sleep "$backoff"
+
+            backoff=$(( backoff * 2 ))
+
+            if (( backoff > MAX_BACKOFF )); then
+                backoff="$MAX_BACKOFF"
+            fi
+        fi
+
+        (( attempt++ ))
+    done
+
+    log "ERROR" "All recovery attempts failed"
+    return 1
+}
+
 log "INFO" "Application watchdog started for $APP_NAME"
 
 if health_check; then
@@ -148,5 +216,14 @@ log "WARN" "Application is unhealthy"
 
 # Evidence must always be collected before remediation.
 collect_evidence
+
+log "INFO" "Beginning controlled recovery"
+
+if recover_application; then
+    log "INFO" "Application recovered successfully"
+    exit "$EXIT_RECOVERED"
+fi
+
+log "ERROR" "Application recovery failed after all attempts"
 
 exit "$EXIT_RECOVERY_FAILED"
