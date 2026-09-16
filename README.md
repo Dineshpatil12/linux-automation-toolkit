@@ -21,7 +21,7 @@ The goal of this repository is to build practical experience in Linux administra
 | 07 | Application Watchdog | Completed |
 | 08 | Automated Server Provisioning | Completed |
 | 09 | Linux Troubleshooting Toolkit | Upcoming |
-| 10 | Self-Healing Linux Application with systemd | Upcoming |
+| 10 | Self-Healing Linux Application with systemd | Completed |
 
 ---
 
@@ -261,7 +261,7 @@ This project will implement a self-healing Linux application using systemd servi
 
 ### Status
 
-Upcoming
+Completed
 
 ---
 

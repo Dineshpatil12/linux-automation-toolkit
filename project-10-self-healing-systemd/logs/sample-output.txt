@@ -1,0 +1,34 @@
+PROJECT 10 — SELF-HEALING SYSTEMD EVIDENCE
+
+Baseline:
+HEALTHY: Application running under systemd
+PASS: service is active and application is healthy.
+
+Controlled failure:
+CONTROLLED CRASH triggered.
+systemd detected:
+Main process exited, code=exited, status=1/FAILURE
+
+Automatic recovery:
+RestartSec=5s
+Scheduled restart job
+Started self-healing-app.service
+New application PID observed
+
+Recovery verification:
+Before crash: NRestarts=0
+After crash: NRestarts=1
+PASS: systemd automatically restarted the application.
+PASS: application health check returned HEALTHY.
+
+Crash-loop protection:
+StartLimitIntervalSec=30
+StartLimitBurst=3
+Repeated failures caused:
+Start request repeated too quickly
+Service entered failed state.
+
+Recovery from failed state:
+systemctl reset-failed self-healing-app.service
+systemctl start self-healing-app.service
+Application returned to healthy state.

@@ -1,0 +1,33 @@
+[Unit]
+Description=Self-Healing Demo Linux Application
+After=local-fs.target
+Wants=local-fs.target
+OnFailure=self-healing-app-failure.service
+
+StartLimitIntervalSec=30
+StartLimitBurst=3
+
+[Service]
+Type=simple
+User=ec2-user
+Group=ec2-user
+
+ExecStartPre=/usr/bin/test -x /opt/self-healing-app/self-healing-app.sh
+ExecStart=/opt/self-healing-app/self-healing-app.sh
+
+Restart=on-failure
+RestartSec=5
+
+# Resource limits
+MemoryMax=128M
+CPUQuota=50%
+
+# Basic sandboxing
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/opt/self-healing-app
+
+[Install]
+WantedBy=multi-user.target

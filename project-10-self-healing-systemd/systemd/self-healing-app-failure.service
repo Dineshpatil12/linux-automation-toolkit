@@ -1,0 +1,6 @@
+[Unit]
+Description=Self-Healing App Failure Handler
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/logger -t self-healing-app "self-healing-app.service entered failure handling"
