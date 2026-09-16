@@ -20,7 +20,7 @@ The goal of this repository is to build practical experience in Linux administra
 | 06 | Log Analysis and Reporting | Completed |
 | 07 | Application Watchdog | Completed |
 | 08 | Automated Server Provisioning | Completed |
-| 09 | Linux Troubleshooting Toolkit | Upcoming |
+| 09 | Linux Troubleshooting Toolkit | Completed |
 | 10 | Self-Healing Linux Application with systemd | Completed |
 
 ---
@@ -247,17 +247,47 @@ Completed
 
 ## Project 09 - Linux Troubleshooting Toolkit
 
-This project will provide a repeatable Linux troubleshooting toolkit for collecting CPU, memory, disk, I/O, process, network, and system diagnostic information.
+This project provides a repeatable Linux troubleshooting toolkit for collecting CPU, memory, disk, I/O, process, network, and system diagnostic information.
+
+The toolkit includes:
+
+- CPU and load diagnostics
+- Memory and swap diagnostics
+- Disk and inode analysis
+- Disk I/O diagnostics
+- Process analysis
+- Network and listening-port checks
+- Log collection
+- System and service state checks
+- Disk utilization warning thresholds
+- Graceful handling of unavailable diagnostics
+- Safe synthetic testing
+- Bash syntax validation
+- ShellCheck validation
+- Sanitized sample troubleshooting report
 
 ### Status
 
-Upcoming
+Completed
 
 ---
 
 ## Project 10 - Self-Healing Linux Application with systemd
 
-This project will implement a self-healing Linux application using systemd service supervision, health checks, restart policies, watchdogs, resource limits, and automated recovery.
+This project implements a self-healing Linux application using systemd service supervision, health checks, restart policies, watchdog mechanisms, resource limits, and automated recovery.
+
+The project demonstrates:
+
+- systemd service management
+- Automatic application restart
+- Failure detection and recovery
+- Restart delay and restart-loop protection
+- Health checks
+- Failure handling
+- Journald logging
+- Resource controls
+- Service recovery verification
+- Safe failure testing
 
 ### Status
 
@@ -267,7 +297,7 @@ Completed
 
 ## Environment
 
-The projects are built and tested using:
+The projects were implemented and tested practically using:
 
 - AWS EC2
 - Amazon Linux
@@ -277,7 +307,6 @@ The projects are built and tested using:
 - systemd
 - Git
 - GitHub
-
 ---
 
 ## Repository Structure
